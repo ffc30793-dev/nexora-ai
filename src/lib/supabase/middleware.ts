@@ -19,7 +19,7 @@ export async function updateSession(request: NextRequest) {
       getAll() {
         return request.cookies.getAll();
       },
-      setAll(list) {
+      setAll(list: { name: string; value: string; options: import('@supabase/ssr').CookieOptions }[]) {
         for (const { name, value } of list) request.cookies.set(name, value);
         response = NextResponse.next({ request });
         for (const { name, value, options } of list) {

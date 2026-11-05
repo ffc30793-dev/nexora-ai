@@ -12,7 +12,7 @@ export async function createClient() {
       getAll() {
         return cookieStore.getAll();
       },
-      setAll(list) {
+      setAll(list: { name: string; value: string; options: import('@supabase/ssr').CookieOptions }[]) {
         try {
           for (const { name, value, options } of list) {
             cookieStore.set(name, value, secureCookieOptions(options));
