@@ -453,6 +453,10 @@ p {
   cursor: pointer;
 }
 
+.nx-logout-mobile {
+  display: none;
+}
+
 /* CONTEÚDO PRINCIPAL */
 
 .nx-main {
@@ -891,6 +895,10 @@ p {
 
 @media (max-width: 760px) {
   .nx-dashboard {
+    display: block;
+  }
+
+  .nx-logout-mobile {
     display: block;
   }
 
