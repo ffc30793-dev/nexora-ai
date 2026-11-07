@@ -143,6 +143,9 @@ export default async function DashboardPage() {
             <div className="nx-top-avatar">
               {firstName.charAt(0).toUpperCase()}
             </div>
+            <form action={signOutAction} className="nx-logout-mobile">
+              <button type="submit" className="btn btn-ghost">Sair</button>
+            </form>
           </div>
         </header>
 
