@@ -922,7 +922,8 @@ p {
 
   .nx-nav {
     flex-direction: row;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    overflow-x: visible;
     padding-bottom: 3px;
   }
 
@@ -1044,5 +1045,4 @@ p {
   .nx-footer {
     flex-direction: column;
   }
-   }
-     
+}
