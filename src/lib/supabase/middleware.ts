@@ -5,6 +5,7 @@ import { secureCookieOptions } from '@/lib/cookies';
 
 const PROTECTED_PATHS = ['/dashboard', '/redefinir-senha'];
 const GUEST_ONLY_PATHS = ['/login', '/cadastro', '/recuperar-senha'];
+const AUTH_TIMEOUT_MS = 4000;
 
 const matches = (pathname: string, bases: string[]) =>
   bases.some((p) => pathname === p || pathname.startsWith(`${p}/`));
@@ -30,9 +31,13 @@ export async function updateSession(request: NextRequest) {
   });
 
   // getUser() valida o token no servidor do Supabase (não confie em getSession aqui).
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Se o Supabase demorar (ex.: projeto pausado), não deixa a Vercel dar timeout 504.
+  const result = await Promise.race([
+    supabase.auth.getUser(),
+    new Promise<'timeout'>((resolve) => setTimeout(() => resolve('timeout'), AUTH_TIMEOUT_MS)),
+  ]).catch(() => 'timeout' as const);
+  const user = result === 'timeout' ? null : result.data.user;
+  const unavailable = result === 'timeout';
 
   const { pathname, search } = request.nextUrl;
 
@@ -46,7 +51,11 @@ export async function updateSession(request: NextRequest) {
     const target = request.nextUrl.clone();
     target.pathname = '/login';
     target.search = '';
-    target.searchParams.set('next', `${pathname}${search}`);
+    if (unavailable) {
+      target.searchParams.set('erro', 'indisponivel');
+    } else {
+      target.searchParams.set('next', `${pathname}${search}`);
+    }
     return redirectWithCookies(target);
   }
 
