@@ -8,6 +8,7 @@ export const metadata: Metadata = { title: 'Entrar' };
 const ERRORS: Record<string, string> = {
   'link-invalido': 'Link inválido ou expirado. Solicite um novo.',
   'sessao-expirada': 'Sua sessão expirou. Entre novamente.',
+  indisponivel: 'Serviço temporariamente indisponível. Tente novamente em instantes.',
 };
 
 export default async function LoginPage({
