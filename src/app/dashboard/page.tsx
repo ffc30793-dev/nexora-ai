@@ -1,155 +1,15 @@
-
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
-import { Logo } from '@/components/Logo';
-import { signOutAction } from '@/app/actions';
+import { AppShell } from '@/components/AppShell';
+import { ROLE_LABEL, getSessionContext } from '@/lib/session';
 
 export const metadata: Metadata = { title: 'Painel | Nexora AI' };
 
-type Business = { id: string; name: string };
-type MembershipRow = {
-  role: 'owner' | 'admin' | 'agent';
-  businesses: Business | Business[] | null;
-};
-
-const ROLE_LABEL: Record<MembershipRow['role'], string> = {
-  owner: 'Proprietário',
-  admin: 'Administrador',
-  agent: 'Atendente',
-};
-
 export default async function DashboardPage() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) redirect('/login');
-
-  const [{ data: profile }, { data: memberships }] = await Promise.all([
-    supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle(),
-    supabase
-      .from('business_members')
-      .select('role, businesses(id, name)')
-      .eq('user_id', user.id),
-  ]);
-
-  const rows = ((memberships ?? []) as unknown as MembershipRow[]).flatMap((m) => {
-    const business = Array.isArray(m.businesses)
-      ? m.businesses[0]
-      : m.businesses;
-
-    return business ? [{ role: m.role, business }] : [];
-  });
-
-  const displayName =
-    (profile?.full_name as string | null | undefined) ||
-    (user.user_metadata?.full_name as string | undefined) ||
-    user.email?.split('@')[0] ||
-    'Usuário';
-
-  const firstName = displayName.trim().split(' ')[0];
+  const ctx = await getSessionContext();
+  const { user, firstName, rows } = ctx;
 
   return (
-    <div className="nx-dashboard">
-      <aside className="nx-sidebar">
-        <div className="nx-brand">
-          <Logo href="/dashboard" />
-          <span className="nx-brand-tag">BUSINESS AI</span>
-        </div>
-
-        <div className="nx-nav-label">MENU PRINCIPAL</div>
-
-        <nav className="nx-nav">
-          <a href="/dashboard" className="nx-nav-item active">
-            <span className="nx-nav-icon">⌂</span>
-            <span>Visão geral</span>
-          </a>
-
-          <div className="nx-nav-item nx-nav-disabled">
-            <span className="nx-nav-icon">♙</span>
-            <span>Clientes</span>
-            <span className="nx-coming">Em breve</span>
-          </div>
-
-          <div className="nx-nav-item nx-nav-disabled">
-            <span className="nx-nav-icon">▤</span>
-            <span>Conversas</span>
-            <span className="nx-coming">Em breve</span>
-          </div>
-
-          <div className="nx-nav-item nx-nav-disabled">
-            <span className="nx-nav-icon">✧</span>
-            <span>Automações</span>
-            <span className="nx-coming">Em breve</span>
-          </div>
-        </nav>
-
-        <div className="nx-nav-label nx-secondary-label">PREFERÊNCIAS</div>
-
-        <nav className="nx-nav">
-          <div className="nx-nav-item nx-nav-disabled">
-            <span className="nx-nav-icon">⚙</span>
-            <span>Configurações</span>
-            <span className="nx-coming">Em breve</span>
-          </div>
-        </nav>
-
-        <div className="nx-sidebar-bottom">
-          <div className="nx-help-card">
-            <div className="nx-help-icon">✦</div>
-            <strong>Seu negócio mais inteligente.</strong>
-            <p>Prepare-se para automatizar seu atendimento com IA.</p>
-          </div>
-
-          <div className="nx-profile">
-            <div className="nx-avatar">
-              {firstName.charAt(0).toUpperCase()}
-            </div>
-
-            <div className="nx-profile-info">
-              <strong>{displayName}</strong>
-              <span>{user.email}</span>
-            </div>
-
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                className="nx-logout"
-                title="Sair da conta"
-                aria-label="Sair da conta"
-              >
-                ↗
-              </button>
-            </form>
-          </div>
-        </div>
-      </aside>
-
-      <main className="nx-main">
-        <header className="nx-topbar">
-          <div>
-            <span className="nx-breadcrumb">Nexora AI / Painel</span>
-            <h1>Visão geral</h1>
-          </div>
-
-          <div className="nx-top-actions">
-            <span className="nx-status">
-              <span className="nx-status-dot" />
-              Sistema conectado
-            </span>
-            <div className="nx-top-avatar">
-              {firstName.charAt(0).toUpperCase()}
-            </div>
-            <form action={signOutAction} className="nx-logout-mobile">
-              <button type="submit" className="btn btn-ghost">Sair</button>
-            </form>
-          </div>
-        </header>
-
-        <div className="nx-content">
+    <AppShell ctx={ctx} active="dashboard" breadcrumb="Nexora AI / Painel" title="Visão geral">
           <section className="nx-welcome">
             <div className="nx-welcome-content">
               <span className="nx-eyebrow">SEU ESPAÇO DE GESTÃO</span>
@@ -293,13 +153,6 @@ export default async function DashboardPage() {
               </div>
             </section>
           </div>
-
-          <footer className="nx-footer">
-            <span>© 2026 Nexora AI. Todos os direitos reservados.</span>
-            <span>Automação inteligente para empresas.</span>
-          </footer>
-        </div>
-      </main>
-    </div>
+    </AppShell>
   );
 }

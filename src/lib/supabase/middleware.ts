@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getSupabaseEnv } from '@/lib/env';
 import { secureCookieOptions } from '@/lib/cookies';
 
-const PROTECTED_PATHS = ['/dashboard', '/redefinir-senha'];
+const PROTECTED_PATHS = ['/dashboard', '/clientes', '/conversas', '/redefinir-senha'];
 const GUEST_ONLY_PATHS = ['/login', '/cadastro', '/recuperar-senha'];
 const AUTH_TIMEOUT_MS = 4000;
 

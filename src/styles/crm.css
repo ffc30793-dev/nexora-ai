@@ -1,0 +1,78 @@
+/* Nexora AI — Pacote 03: clientes e conversas */
+
+.crm-stack { display: flex; flex-direction: column; gap: 16px; }
+.crm-grid { display: grid; gap: 16px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 900px) { .crm-grid { grid-template-columns: 340px 1fr; } }
+
+.crm-panel {
+  background: #fff;
+  border: 1px solid #e8edf5;
+  border-radius: 18px;
+  padding: 18px;
+}
+.crm-panel h2 { margin: 0 0 4px; font-size: 16px; }
+.crm-sub { margin: 0 0 14px; color: #94a3b8; font-size: 13px; }
+
+.crm-search { display: flex; gap: 8px; margin-bottom: 14px; }
+.crm-search .input { flex: 1; }
+.crm-search .btn { width: auto; min-height: 48px; }
+
+.crm-list { list-style: none; margin: 0; padding: 0; }
+.crm-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 0; border-top: 1px solid #eef2f7;
+}
+.crm-item:first-child { border-top: 0; }
+.crm-item-main { min-width: 0; flex: 1; }
+.crm-item-main strong { display: block; font-size: 15px; color: #0f172a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.crm-item-main span { display: block; font-size: 13px; color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.crm-item .btn { width: auto; min-height: 40px; padding: 0 14px; font-size: 14px; flex-shrink: 0; }
+
+.crm-link-item { color: inherit; text-decoration: none; }
+.crm-link-item:hover { text-decoration: none; background: #f8fafc; }
+.crm-link-item .crm-item-side { text-align: right; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.crm-time { font-size: 12px; color: #94a3b8; }
+
+.crm-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.crm-tab {
+  min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center;
+  border-radius: 999px; border: 1px solid #e2e8f0; color: #475569;
+  font-size: 14px; font-weight: 600; text-decoration: none; background: #fff;
+}
+.crm-tab:hover { text-decoration: none; background: #f8fafc; }
+.crm-tab.active { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+
+.crm-empty { text-align: center; padding: 28px 8px; color: #64748b; }
+.crm-empty strong { display: block; color: #0f172a; margin-bottom: 4px; }
+
+.crm-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;
+  background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe;
+}
+.crm-badge.resolved { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+.crm-badge.pending { background: #fffbeb; color: #b45309; border-color: #fde68a; }
+
+/* Conversa */
+.crm-thread-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.crm-back { font-size: 14px; font-weight: 600; text-decoration: none; }
+.crm-thread-head h2 { margin: 2px 0 0; }
+.crm-thread-actions { display: flex; align-items: center; gap: 10px; }
+.crm-thread-actions .btn { width: auto; min-height: 40px; font-size: 14px; }
+
+.crm-messages {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 14px; background: #f5f8ff; border-radius: 14px; min-height: 160px;
+}
+.crm-msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 15px; line-height: 1.45; word-break: break-word; white-space: pre-wrap; }
+.crm-msg small { display: block; margin-top: 4px; font-size: 11px; opacity: .7; }
+.crm-msg.in { align-self: flex-start; background: #fff; border: 1px solid #e2e8f0; color: #0f172a; border-bottom-left-radius: 4px; }
+.crm-msg.out { align-self: flex-end; background: #1d4ed8; color: #fff; border-bottom-right-radius: 4px; }
+
+.crm-composer { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.crm-textarea { min-height: 88px; resize: vertical; font-family: inherit; line-height: 1.4; }
+.crm-note { font-size: 12px; color: #94a3b8; margin: 8px 0 0; }
+
+.crm-test { margin-top: 16px; border: 1px dashed #cbd5e1; border-radius: 14px; padding: 12px 14px; }
+.crm-test summary { cursor: pointer; font-size: 14px; font-weight: 600; color: #64748b; min-height: 32px; display: flex; align-items: center; }
